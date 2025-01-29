@@ -1,0 +1,68 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+pauc_lower = 0.0
+pauc_upper = 0.4
+
+fnmr_lower = 0.0
+fnmr_upper = 0.1
+
+
+edc_files = []
+# edc_files.append("output_files\Predicted-SPECIFIC-9-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-Top-20-Features-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-Top-15-Features-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-Top-10-Features-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-KNN-Test-set-VGGFace200k-ERC.csv")
+edc_files.append("output_files\OFIQ-UQS-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-SPECIFIC-14-5-FoldCV-All-Features-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-SPECIFIC-15-5-FoldCV-All-Features-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-SPECIFIC-14-NoPreprocessing-All-Features-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\Predicted-RFR-SPECIFIC-14-OcclusionFeaturesRemoved-Test-set-VGGFace200k-ERC.csv")
+# edc_files.append("output_files\RF-CLASSIFIER-SPECIFIC-14.csv")
+# edc_files.append("output_files\RF-CLASSIFIER-SPECIFIC-14-low0-10-high80.csv")
+# edc_files.append("output_files\RF-CLASSIFIER-SPECIFIC-14-low0-30-high80.csv")
+# edc_files.append("output_files\RF-CLASSIFIER-SPECIFIC-14-low0-40-high60.csv")
+# edc_files.append("output_files\RF-CLASSIFIER-SPECIFIC-14-low10-40-high60.csv")
+# edc_files.append("output_files\RF-CLASSIFIER-SPECIFIC-14-low5-40-high60.csv")
+
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_1-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_2-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_3-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_4-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_5-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_6-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_7-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFR-SPECIFIC_FINAL_8-VGGFace200k-rs-36-test-set.csv")
+
+
+edc_files.append("RF-EDCs\EDC-RFC-BROAD_DEFAULT_1-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_1-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_2-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_3-All-VGGFace200k-rs-36-test-set.csv")
+edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_4-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_5-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_6-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_7-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_8-All-VGGFace200k-rs-36-test-set.csv")
+# edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_9-All-VGGFace200k-rs-36-test-set.csv")
+edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_10-All-VGGFace200k-rs-36-test-set.csv")
+edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_11-All-VGGFace200k-rs-36-test-set.csv")
+edc_files.append("RF-EDCs\EDC-RFC-SPECIFIC_FINAL_12-All-VGGFace200k-rs-36-test-set.csv")
+
+
+ax = plt.step([0], [0]) # dummy to initialize ax
+plt.clf()
+for file in edc_files:
+    edc_df = pd.read_csv(file, sep=';', decimal=',', header=None)
+    discard_fractions = edc_df[0].values
+    errors = edc_df[1].values
+    ax = plt.step(discard_fractions, errors, where="post", label=file) # TODO: should add "label=<something>"
+
+plt.legend(title='Score origin:')
+plt.savefig("test.pdf", bbox_inches="tight")
+plt.ylim( fnmr_lower, fnmr_upper )  
+plt.xlim( pauc_lower, pauc_upper )  
+plt.show()
+

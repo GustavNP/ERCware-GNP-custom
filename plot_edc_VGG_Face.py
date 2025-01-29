@@ -51,24 +51,21 @@ with open(args.input, "r") as csv_file:
 
 # Compute a quantile of the input comparison scores to use it as the comparison threshold:
 comparison_threshold = np.quantile(pair_comparison_scores, args.quantile)
-quality_score_at_threshold1 = np.quantile(pair_quality_scores, 0.84)
-comparison_score_at_threshold1 = np.quantile(pair_comparison_scores, 1-0.84)
-quality_score_at_threshold2 = np.quantile(pair_quality_scores, 0.916)
-comparison_score_at_threshold2 = np.quantile(pair_comparison_scores, 1-0.916)
-quality_score_at_threshold3 = np.quantile(pair_quality_scores, 0.9682)
-comparison_score_at_threshold3 = np.quantile(pair_comparison_scores, 1-0.9682)
-quality_score_at_threshold4 = np.quantile(pair_quality_scores, 0.97441)
+quality_score_at_threshold = np.quantile(pair_quality_scores, 0.40)
+
 print(comparison_threshold)
-print(quality_score_at_threshold1)
-print(comparison_score_at_threshold1)
-print(quality_score_at_threshold2)
-print(comparison_score_at_threshold2)
-print(quality_score_at_threshold3)
-print(comparison_score_at_threshold3)
-print(quality_score_at_threshold4)
+print(quality_score_at_threshold)
+
+
 
 # Run the EDC computations:
 discard_fractions, errors = compute_edc(pair_comparison_scores, pair_quality_scores, comparison_threshold, np.greater)
+
+
+print(discard_fractions)
+print(np.array([1.0]))
+discard_fractions = np.concatenate((discard_fractions, np.array([1.0])))
+errors = np.concatenate((errors, np.array([0.0])))
 
 # Ensure that the output directory exists:
 args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -87,3 +84,5 @@ def format_csv_value(value):
 with open(args.output.with_suffix(".csv"), "w", newline="") as csv_file:
     csv.writer(csv_file, delimiter=";").writerows(((format_csv_value(discard_fraction), format_csv_value(error))
                                                    for discard_fraction, error in zip(discard_fractions, errors)))
+
+
