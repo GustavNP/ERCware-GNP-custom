@@ -58,12 +58,12 @@ ax = plt.step([0], [0]) # dummy to initialize ax
 plt.clf()
 
 # OFIQ MagFace UQS
-edc_df = pd.read_csv("EDC-files\OFIQ-UQS-Test-set-VGGFace200k-ERC.csv", sep=';', decimal=',', header=None)
+edc_df = pd.read_csv("EDC-files\EDC-pairs-OFIQ-UQS-Test-set-VGGFace200k.csv", sep=';', decimal=',', header=None)
 discard_fractions = edc_df[0].values
 errors = edc_df[1].values
 ax = plt.step(discard_fractions, errors, where="post", label="OFIQ MagFace UQS - pAUC: 0.02628")
 
-pauc_df = pd.read_csv("pauc-files\pauc.csv", sep=';', header=None)
+pauc_df = pd.read_csv("pauc-files\pauc-all-EDCs.csv", sep=';', header=None)
 pauc_df[1] = pauc_df[1].apply(lambda x: round(x, 5))
 pauc_dict = pd.Series(pauc_df[1].values,index=pauc_df[0]).to_dict()
 for file in edc_files:
