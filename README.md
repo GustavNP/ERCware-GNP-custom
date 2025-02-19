@@ -1,3 +1,25 @@
+This is a modified version of ERCWare.
+===================================
+The following files have been added by Gustav Nilsson Pedersen as part of the work on his master's thesis:
+
+- compute_edc_for_all_files_in_directory.py
+- compute_pauc_for_all_files_in_directory.py
+- plot_multiple_EDC_curves_with_pauc.py
+
+plot_edc_VGG_Face.py was added by Gustav in a previous course at the Technical University of Denmark.
+
+To compute edc data points for multiple files, place csv files in "pair-files" folder and run "compute_edc_for_all_files_in_directory.py". The csv files should contain comparison scores in the first column and quality scores in the second column. The comparison scores should be dissimilarity scores.
+
+To compute pauc values for multiple files, run "compute_pauc_for_all_files_in_directory.py" and it will compute pauc for all files in "EDC-files".
+
+To plot edc curves for files, add the file paths to the script "plot_multiple_EDC_curves_with_pauc.py", then run it and it will plot the edc curves.
+
+
+
+
+
+
+Readme from original project:
 Error vs. Discard Characteristic (EDC) plots
 ============================================
 

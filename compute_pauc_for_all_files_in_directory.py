@@ -1,16 +1,16 @@
 
 import os
 import csv
-import pandas as pd
 
 pauc_lower = 0.0
 pauc_upper = 0.4
 
 
 
+# Author: Gustav Nilsson Pedersen - s174562
 
 
-directory_path = "C:\\Users\\admin\\source\\repos\\ERCware\\CQM-EDCs"
+directory_path = "EDC-files"
 
 
 pAUC_dictionary = {}
@@ -34,14 +34,10 @@ for root, dirs, files in os.walk(directory_path):
                 upper = min(edc_points[i+1][0], pauc_upper)
                 val = edc_points[i][1] * (upper - edc_points[i][0])
                 pauc += val
-                # print("val")
-                # print(val)
-                # print("pauc_temp")
-                # print(pauc)
         pAUC_dictionary[file] = pauc
         print(pauc)
 
-with open("pauc_files\pauc_CQMs_VGGFace200k-25-percent-of-images-in-train-set.csv", "w", newline="") as csv_file:
+with open("pauc-files\pauc-all-EDCs.csv", "w", newline="") as csv_file:
     csv.writer(csv_file, delimiter=";").writerows(((file, pauc_value, pauc_lower, pauc_upper) for file, pauc_value in pAUC_dictionary.items()))
 
 

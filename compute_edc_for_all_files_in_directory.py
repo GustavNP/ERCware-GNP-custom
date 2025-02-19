@@ -1,6 +1,4 @@
-import argparse
 import csv
-from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,15 +7,11 @@ import os
 from edc import compute_edc
 
 
+# Author: Gustav Nilsson Pedersen - s174562
+
+
 quantile = 0.90
-# directory_path = "C:\\Users\\admin\\source\\repos\\FaceSimilarity\\CQM-and-dissimilarity-pairs"
-# directory_path = "RFR-SPECIFIC-FINAL-Predictions"
-# directory_path = "RFC-Predictions"
-# directory_path = "C:/Users/admin/source/repos/FaceSimilarity/dissimilarity_and_quality_score_pairs/RFC-Top-24"
-# directory_path = "C:/Users/admin/source/repos/FaceSimilarity/dissimilarity_and_quality_score_pairs/RFC-Top-20"
-# directory_path = "C:/Users/admin/source/repos/FaceSimilarity/dissimilarity_and_quality_score_pairs/RFC-Top-15"
-# directory_path = "C:/Users/admin/source/repos/FaceSimilarity/dissimilarity_and_quality_score_pairs/RFC-Top-10"
-directory_path = "C:/Users/admin/source/repos/FaceSimilarity/dissimilarity_and_quality_score_pairs/RFR-Top-20"
+directory_path = "pair-files"
 
 
 lower_discard_fraction = 0.0
@@ -26,7 +20,7 @@ lower_error_rate = 0.0
 upper_error_rate = 0.125
 
 
-output_directory = "RF-EDCs/RFR-Top-20"
+output_directory = "EDC-files"
 
 for root, dirs, files in os.walk(directory_path):
     for file in files:
@@ -55,7 +49,8 @@ for root, dirs, files in os.walk(directory_path):
         discard_fractions = np.concatenate((discard_fractions, np.array([1.0])))
         errors = np.concatenate((errors, np.array([0.0])))
 
-        output_filename_csv = file.split('OFIQ_')[1] # assumes the files use CQMs, RFR or RFC, and the name of interest comes after "OFIQ_"
+        output_filename, extension = os.path.splitext(file)
+        output_filename_csv = output_filename + '.csv'
         output_filename_pdf = output_filename_csv.replace('csv', 'pdf')
 
 
@@ -63,7 +58,8 @@ for root, dirs, files in os.walk(directory_path):
         plt.step(discard_fractions, errors, where="post")
         plt.ylim( lower_error_rate, upper_error_rate )  
         plt.xlim( lower_discard_fraction, upper_discard_fraction )  
-        # plt.savefig(f"CQM-EDCs/EDC-{output_filename_pdf}", bbox_inches="tight")
+        plt.ylabel('FNMR')
+        plt.xlabel('Discard fraction')
         plt.savefig(f"{output_directory}/EDC-{output_filename_pdf}", bbox_inches="tight")
         # plt.show()
         plt.clf()
@@ -73,7 +69,6 @@ for root, dirs, files in os.walk(directory_path):
         def format_csv_value(value):
             return str(value).replace(".", ",")
 
-        # with open(f"CQM-EDCs/EDC-{output_filename_csv}", "w", newline="") as csv_file:
         with open(f"{output_directory}/EDC-{output_filename_csv}", "w", newline="") as csv_file:
             csv.writer(csv_file, delimiter=";").writerows(((format_csv_value(discard_fraction), format_csv_value(error))
                                                         for discard_fraction, error in zip(discard_fractions, errors)))
