@@ -1,6 +1,6 @@
 This is a modified version of ERCWare.
 ===================================
-The following files have been added by Gustav Nilsson Pedersen as part of the work on his master's thesis:
+The following files have been added by Gustav Nilsson Pedersen (s174562@student.dtu.dk) as part of the work on his master's thesis:
 
 - compute_edc_for_all_files_in_directory.py
 - compute_pauc_for_all_files_in_directory.py
